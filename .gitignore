@@ -1,0 +1,6 @@
+# MKDocs
+site/
+
+# Python
+.venv/
+venv/
