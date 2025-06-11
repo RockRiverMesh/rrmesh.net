@@ -4,3 +4,7 @@ site/
 # Python
 .venv/
 venv/
+
+# Draw.io
+*.drawio.bkp
+*.drawio.dtmp
