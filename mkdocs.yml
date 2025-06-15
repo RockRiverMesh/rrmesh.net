@@ -50,9 +50,12 @@ markdown_extensions:
 
 plugins:
   - git-revision-date-localized:
-  - drawio
+  - drawio:
+      edit: false
+      darkmode: true
   - glightbox
   - offline
+  - privacy
   - tags
 
 validation:
@@ -63,4 +66,4 @@ validation:
 
 extra_javascript:
   - https://viewer.diagrams.net/js/viewer-static.min.js
-  - assets/scripts/drawio-reload.js
+  - assets/javascripts/drawio-reload.js

@@ -1,6 +1,15 @@
 # Resources
+Various assets for developing documentation.
 
-| Name                                                       | Preview                                     |
-|------------------------------------------------------------|---------------------------------------------|
-| [Basic](templates/rrmesh_basic.drawio)                     | ![](templates/rrmesh_basic.drawio)          |
-| [Project (Letter)](templates/rrmesh_project_letter.drawio) | ![](templates/rrmesh_project_letter.drawio) |
+## Diagrams
+Use with [diagrams.net](https://app.diagrams.net/) 
+
+### [Basic](templates/rrmesh_basic.drawio)
+<figure markdown="span">
+  ![](templates/rrmesh_basic.drawio){ width="300" }
+</figure>
+
+### [Project (Letter)](templates/rrmesh_project_letter.drawio)
+<figure markdown="span">
+  ![](templates/rrmesh_project_letter.drawio){ width="300" }
+</figure>

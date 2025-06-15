@@ -4,7 +4,9 @@
 
 Meshtastic packets that go through the MQTT server have their hop limits reduced to 1. Nodes connected to MQTT will only rebroadcast messages to nodes within range of itself.
 
-![](mqtt_hops.drawio)
+<figure markdown="span">
+  ![](mqtt_hops.drawio){ width="300" }
+</figure>
 
 If **\[ALCE\] Alice** wanted to talk to **\[BOB\] Bob**, her messages would reach. However, due to Hop Limit restrictions and being out of range of **\[MG-1\]**, **\[CHAR\] Charlie** won't receive any.
 
