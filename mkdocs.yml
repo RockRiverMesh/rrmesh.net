@@ -3,12 +3,15 @@ site_url: https://rrmesh.net/
 #repo_url: https://github.com/RockRiverMesh/rrmesh.net
 #repo_name: RRMesh/rrmesh.net
 edit_uri: "https://github.com/RockRiverMesh/rrmesh.net/edit/main/docs"
+copyright: 'Copyright &copy; 2025 Rock River Mesh <u><a href="https://github.com/RockRiverMesh/rrmesh.net">Contributors</a></u><br><p style="margin:0">Rock River Mesh is not affilated with <u><a href="https://meshtastic.org" target="_blank" rel="noreferrer noopener">Meshtastic®</a></u>, nor endorsed by <u><a href="https://meshtastic.org/docs/legal/licensing-and-trademark" target="_blank" rel="noreferrer noopener">Meshtastic LLC</a></u>.</p>'
 
 nav:
   - Home: 'index.md'
   - Meshtastic:
     - 'meshtastic/index.md'
-    - MQTT: 'meshtastic/mqtt.md'
+    - Guides: 'meshtastic/guides/index.md'
+    - Map: 'meshtastic/map.md'
+    - MQTT: 'meshtastic/mqtt/index.md'
   - Resources: 'resources/index.md'
   - Contact: 'contact.md'
 

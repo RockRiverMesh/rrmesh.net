@@ -2,9 +2,9 @@
 
 Meshtastic utilizes low-cost, low-power LoRa radios for decentralized communication without need an operating license. LoRa radios can be paired with a wide variety of devices over Bluetooth, WiFi, and USB.
 
-Join us in our [Meshtastic](https://meshtastic.org/docs/introduction/) channel.
-
 ## Public Channel
+
+Join us in our [Meshtastic](https://meshtastic.org/docs/introduction/) channel.
 
 <div class="grid cards" markdown>
 
@@ -25,7 +25,6 @@ Join us in our [Meshtastic](https://meshtastic.org/docs/introduction/) channel.
 
     ---
 
-    Out of range? Configure your node to [send and receive from MQTT](mqtt.md).
+    Out of range? Configure your node to [send and receive from MQTT](mqtt/index.md).
 
 </div>
-
