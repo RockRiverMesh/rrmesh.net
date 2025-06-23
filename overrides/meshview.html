@@ -138,6 +138,7 @@
     });
 
     // add icon to external link and set to open in new tab
+    /*
     const link = document.querySelector('a[href="https://meshview.rrmesh.net"]');
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", "0 0 24 24");
@@ -148,9 +149,10 @@
     // update external link href when iframe changes
     window.addEventListener("message", function (e) {
       if (e.data.type === "urlChange") {
-	link.href = e.data.url;
+	    link.href = e.data.url;
       }
     });
+    */
   });
 
   function updateTheme(iframe) {
