@@ -20,11 +20,26 @@ hide:
     - Grid Cards
 -->
 
+<div class="grid cards" markdown>
+
+-   ## Real-time Mesh
+
+    Use the [Portal](/portal.md) to view the regional mesh, live!
+
+</div>
+
+<div class="grid cards" markdown>
+
+-   ## MeshCore
+
+    We primarily operate [MeshCore](/meshcore/index.md) repeaters.
+
+</div>
 
 <div class="grid cards" markdown>
 
 -   ## Meshtastic
 
-    Join us in our [Meshtastic](/meshtastic/index.md) channel.
+    We also support community [Meshtastic](/meshtastic/index.md) nodes.
 
 </div>

@@ -60,6 +60,9 @@ plugins:
   - offline
   - privacy
   - tags
+  - redirects:
+      redirect_maps:
+        'meshtastic/map.md': 'portal.md'
 
 validation:
   omitted_files: warn

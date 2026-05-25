@@ -89,15 +89,17 @@
     }
 </style>
 
-<iframe
-    id="meshview"
-    onload="this"
-    src="https://meshview.rrmesh.net/{{ page.url[11:0] }}"
+<iframe src="https://portal.rrmesh.net/embed/f964e2e4-57c7-4da1-8981-e2d1f253d830"
+        width="800"
+        height="600"
+        frameborder="0"
+        style="border:0"
+        allowfullscreen
 ></iframe>
 
 <div class="loading-container">
     <div class="loading-spinner"></div>
-    <div class="loading-notification">MeshView backend may be down...</div>
+    <div class="loading-notification">Portal backend may be down...</div>
 </div>
 
 <script>
@@ -139,7 +141,7 @@
 
     // add icon to external link and set to open in new tab
     /*
-    const link = document.querySelector('a[href="https://meshview.rrmesh.net"]');
+    const link = document.querySelector('a[href="https://portal.rrmesh.net"]');
     const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
     svg.setAttribute("viewBox", "0 0 24 24");
     svg.innerHTML = `<path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />`;
