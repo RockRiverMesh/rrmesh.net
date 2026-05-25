@@ -26,17 +26,9 @@ hide:
 
     Use the [Portal](/portal.md) to view the regional mesh, live!
 
-</div>
-
-<div class="grid cards" markdown>
-
 -   ## MeshCore
 
     We primarily operate [MeshCore](/meshcore/index.md) repeaters.
-
-</div>
-
-<div class="grid cards" markdown>
 
 -   ## Meshtastic
 

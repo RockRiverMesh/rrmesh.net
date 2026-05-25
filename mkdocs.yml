@@ -7,11 +7,13 @@ copyright: 'Copyright &copy; 2025 Rock River Mesh <u><a href="https://github.com
 
 nav:
   - Home: 'index.md'
+  - Portal: 'portal.md'
+  - MeshCore:
+      - 'meshcore/index.md'
   - Meshtastic:
-    - 'meshtastic/index.md'
-    - Guides: 'meshtastic/guides/index.md'
-    - Map: 'meshtastic/map.md'
-    - MQTT: 'meshtastic/mqtt/index.md'
+      - 'meshtastic/index.md'
+      - Guides: 'meshtastic/guides/index.md'
+      - MQTT: 'meshtastic/mqtt/index.md'
   - Resources: 'resources/index.md'
   - Contact: 'contact.md'
 
