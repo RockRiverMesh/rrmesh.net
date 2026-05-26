@@ -42,7 +42,6 @@
     .loading-notification {
         top: 20px;
         background-color: #ff4444;
-        background-color: #ff4444;
         color: white;
         padding: 15px;
         border-radius: 5px;
@@ -136,30 +135,13 @@
         }, 3000);
       }
     });
-
-    // add icon to external link and set to open in new tab
-    /*
-    const link = document.querySelector('a[href="https://portal.rrmesh.net"]');
-    const svg = document.createElementNS("http://www.w3.org/2000/svg", "svg");
-    svg.setAttribute("viewBox", "0 0 24 24");
-    svg.innerHTML = `<path d="M14,3V5H17.59L7.76,14.83L9.17,16.24L19,6.41V10H21V3M19,19H5V5H12V3H5C3.89,3 3,3.9 3,5V19A2,2 0 0,0 5,21H19A2,2 0 0,0 21,19V12H19V19Z" />`;
-    link.appendChild(svg);
-    link.setAttribute('target', '_blank');
-
-    // update external link href when iframe changes
-    window.addEventListener("message", function (e) {
-      if (e.data.type === "urlChange") {
-	    link.href = e.data.url;
-      }
-    });
-    */
   });
 
   function updateTheme(iframe) {
-    if (document.body.getAttribute('data-md-color-scheme') == 'chicago-light') {
-      iframe.contentWindow.postMessage('updateThemeLight', '*');
-    } else {
+    if (document.body.getAttribute('data-md-color-scheme') === 'slate') {
       iframe.contentWindow.postMessage('updateThemeDark', '*');
+    } else {
+      iframe.contentWindow.postMessage('updateThemeLight', '*');
     }
   }
 </script>
