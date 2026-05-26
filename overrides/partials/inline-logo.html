@@ -1,0 +1,10 @@
+{#-
+  Inline-SVG variant of partials/logo.html, used by the header so its
+  paths are stylable via CSS. Other contexts (drawer, nav) keep using
+  the standard partials/logo.html, which renders as <img src=...>.
+-#}
+{% if config.extra.logo_svg %}
+  {{ config.extra.logo_svg | safe }}
+{% else %}
+  {% include "partials/logo.html" %}
+{% endif %}

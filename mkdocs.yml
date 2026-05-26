@@ -67,6 +67,7 @@ markdown_extensions:
 
 hooks:
   - hooks/qr.py
+  - hooks/inline_logo.py
 
 plugins:
   - git-revision-date-localized:
@@ -88,6 +89,9 @@ validation:
   absolute_links: relative_to_docs
   unrecognized_links: warn
   anchors: warn
+
+extra_css:
+  - assets/stylesheets/logo-stroke.css
 
 extra_javascript:
   - https://viewer.diagrams.net/js/viewer-static.min.js
