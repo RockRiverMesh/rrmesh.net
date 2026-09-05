@@ -1,0 +1,604 @@
+<!DOCTYPE html><html class="no-js" lang="en"><head>
+<meta charset="utf-8">
+<meta content="width=device-width,initial-scale=1" name="viewport">
+<link href="https://rrmesh.net/meshtastic/mqtt/index.html" rel="canonical">
+<link href="../guides/index.html" rel="prev">
+<link href="../../resources/index.html" rel="next">
+<link href="../../assets/rrmesh_favicon.png" rel="icon">
+<meta content="mkdocs-1.6.1, mkdocs-material-9.7.7" name="generator">
+<title>MQTT - rrmesh</title>
+<link href="../../assets/stylesheets/main.ec1eaa64.min.css" rel="stylesheet">
+<link href="../../assets/stylesheets/palette.ab4e12ef.min.css" rel="stylesheet">
+<script src="../../assets/external/unpkg.com/iframe-worker/shim.js"></script>
+
+<link href="../../assets/external/fonts.googleapis.com/css.4c1d2238.css" rel="stylesheet">
+<style>:root{--md-text-font:"montserrat";--md-code-font:"Roboto Mono"}</style>
+<link href="../../assets/stylesheets/logo-stroke.css" rel="stylesheet">
+<link href="../../css/drawio-darkmode.css" rel="stylesheet">
+<script>__md_scope=new URL("../..",location),__md_hash=e=>[...e].reduce(((e,_)=>(e<<5)-e+_.charCodeAt(0)),0),__md_get=(e,_=localStorage,t=__md_scope)=>JSON.parse(_.getItem(t.pathname+"."+e)),__md_set=(e,_,t=localStorage,a=__md_scope)=>{try{t.setItem(a.pathname+"."+e,JSON.stringify(_))}catch(e){}}</script>
+<link href="../../assets/stylesheets/glightbox.min.css" rel="stylesheet"><script src="../../assets/javascripts/glightbox.min.js"></script><style id="glightbox-style">
+            html.glightbox-open { overflow: initial; height: 100%; }
+            .gslide-title { margin-top: 0px; user-select: text; }
+            .gslide-desc { color: #666; user-select: text; }
+            .gslide-image img { background: white; }
+            .gscrollbar-fixer { padding-right: 15px; }
+            .gdesc-inner { font-size: 0.75rem; }
+            body[data-md-color-scheme="slate"] .gdesc-inner { background: var(--md-default-bg-color); }
+            body[data-md-color-scheme="slate"] .gslide-title { color: var(--md-default-fg-color); }
+            body[data-md-color-scheme="slate"] .gslide-desc { color: var(--md-default-fg-color); }
+        </style></head>
+<body data-md-color-accent="light-green" data-md-color-primary="blue" data-md-color-scheme="default" dir="ltr">
+<input autocomplete="off" class="md-toggle" data-md-toggle="drawer" id="__drawer" type="checkbox">
+<input autocomplete="off" class="md-toggle" data-md-toggle="search" id="__search" type="checkbox">
+<label class="md-overlay" for="__drawer"></label>
+<div data-md-component="skip">
+<a class="md-skip" href="#mqtt-for-meshtastic">
+          Skip to content
+        </a>
+</div>
+<div data-md-component="announce">
+</div>
+<!--
+  Copyright (c) 2016-2025 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+<!-- Determine classes -->
+<!-- Header -->
+<header class="md-header md-header--shadow md-header--lifted" data-md-component="header">
+<nav aria-label="Header" class="md-header__inner md-grid">
+<!-- Link to home -->
+<a aria-label="rrmesh" class="md-header__button md-logo" data-md-component="logo" href="../../index.html" title="rrmesh">
+<svg height="142.49001" id="svg6" version="1.1" viewBox="0 0 627.57001 142.49001" width="627.57001" xmlns="http://www.w3.org/2000/svg" xmlns:svg="http://www.w3.org/2000/svg">
+<defs id="defs6"></defs>
+<g id="layer1" transform="translate(-219.41,-202.74)">
+<path d="m 289.2,345.03 h 29.95 v -48.77 c 0,-19.78 10.94,-28.8 27.46,-28.8 2.3,0 4.22,0.19 6.72,0.38 v -27.65 c -15.94,0 -28.22,5.18 -35.52,15.17 V 241.73 H 289.2 Z m -69.79,0 h 29.95 v -48.77 c 0,-19.78 10.94,-28.8 27.46,-28.8 2.3,0 4.22,0.19 6.72,0.38 v -27.65 c -15.94,0 -28.22,5.18 -35.52,15.17 v -13.63 h -28.61 z" id="rr" style="fill:#007bff"></path>
+<path d="m 741.38,345.21 h 29.95 v -51.07 c 0,-19.01 10.37,-27.84 24.77,-27.84 13.25,0 20.93,7.68 20.93,24.38 v 54.53 h 29.95 v -59.14 c 0,-31.49 -18.43,-45.7 -42.82,-45.7 -13.25,0 -24.77,4.22 -32.83,12.29 v -49.92 h -29.95 z m -52.42,0.01 c 31.23,0 49.28,-13.49 49.28,-32.49 0,-40.28 -63.05,-23.37 -63.05,-40.85 0,-5.32 5.82,-9.5 19.4,-9.5 9.51,0 19.79,1.9 30.07,7.6 l 10.09,-21.09 c -9.89,-5.7 -25.8,-8.93 -40.16,-8.93 -30.46,0 -48.31,13.68 -48.31,33.06 0,24.89 23.47,28.31 41.9,30.78 11.64,1.71 21.15,3.23 21.15,9.69 0,5.7 -5.24,9.31 -19.21,9.31 -12.8,0 -26.97,-3.99 -36.28,-9.88 l -10.09,21.28 c 9.7,6.27 27.55,11.02 45.2,11.02 z m -93.6,0.01 c 18.69,0 33.15,-5.74 42.78,-16.64 l -16,-17.22 c -7.13,6.69 -15.03,9.95 -26.02,9.95 -15.8,0 -26.79,-7.84 -29.68,-20.66 h 78.44 c 0.19,-2.49 0.58,-5.74 0.58,-8.03 0,-33.09 -23.51,-53.37 -53.96,-53.37 -31.61,0 -55.31,22.19 -55.31,52.98 0,30.61 23.32,52.98 59.17,52.98 z m -29.09,-61.97 c 2.12,-13.01 11.76,-21.42 25.44,-21.42 13.49,0 23.32,8.42 25.44,21.42 z m -207.46,61.95 h 29.92 v -51.89 c 0,-18.45 9.4,-27.1 22.63,-27.1 12.47,0 19.56,7.69 19.56,24.41 v 54.59 h 29.92 v -51.89 c 0,-18.45 9.4,-27.1 22.82,-27.1 12.08,0 19.56,7.69 19.56,24.41 v 54.59 h 29.92 v -59.2 c 0,-31.52 -17.65,-45.74 -42.2,-45.74 -15.54,0 -28.96,6.34 -37.21,16.91 -7.1,-11.34 -19.56,-16.91 -33.95,-16.91 -13.23,0 -24.74,4.61 -32.41,13.45 v -11.92 h -28.58 z" id="mesh" style="fill:#28a745"></path>
+</g>
+</svg>
+</a>
+<!-- Button to open drawer -->
+<label class="md-header__button md-icon" for="__drawer">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M3 6h18v2H3zm0 5h18v2H3zm0 5h18v2H3z"></path></svg>
+</label>
+<!-- Header title -->
+<div class="md-header__title" data-md-component="header-title">
+<div class="md-header__ellipsis">
+<div class="md-header__topic" data-md-component="header-topic">
+</div>
+</div>
+</div>
+<!-- Color palette toggle -->
+<form class="md-header__option" data-md-component="palette">
+<input aria-label="Switch to dark mode" class="md-option" data-md-color-accent="light-green" data-md-color-media="(prefers-color-scheme: light)" data-md-color-primary="blue" data-md-color-scheme="default" id="__palette_0" name="__palette" type="radio">
+<label class="md-header__button md-icon" for="__palette_1" hidden="" title="Switch to dark mode">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M12 7a5 5 0 0 1 5 5 5 5 0 0 1-5 5 5 5 0 0 1-5-5 5 5 0 0 1 5-5m0 2a3 3 0 0 0-3 3 3 3 0 0 0 3 3 3 3 0 0 0 3-3 3 3 0 0 0-3-3m0-7 2.39 3.42C13.65 5.15 12.84 5 12 5s-1.65.15-2.39.42zM3.34 7l4.16-.35A7.2 7.2 0 0 0 5.94 8.5c-.44.74-.69 1.5-.83 2.29zm.02 10 1.76-3.77a7.131 7.131 0 0 0 2.38 4.14zM20.65 7l-1.77 3.79a7.02 7.02 0 0 0-2.38-4.15zm-.01 10-4.14.36c.59-.51 1.12-1.14 1.54-1.86.42-.73.69-1.5.83-2.29zM12 22l-2.41-3.44c.74.27 1.55.44 2.41.44.82 0 1.63-.17 2.37-.44z"></path></svg>
+</label>
+<input aria-label="Switch to light mode" class="md-option" data-md-color-accent="light-green" data-md-color-media="(prefers-color-scheme: dark)" data-md-color-primary="blue" data-md-color-scheme="slate" id="__palette_1" name="__palette" type="radio">
+<label class="md-header__button md-icon" for="__palette_0" hidden="" title="Switch to light mode">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m17.75 4.09-2.53 1.94.91 3.06-2.63-1.81-2.63 1.81.91-3.06-2.53-1.94L12.44 4l1.06-3 1.06 3zm3.5 6.91-1.64 1.25.59 1.98-1.7-1.17-1.7 1.17.59-1.98L15.75 11l2.06-.05L18.5 9l.69 1.95zm-2.28 4.95c.83-.08 1.72 1.1 1.19 1.85-.32.45-.66.87-1.08 1.27C15.17 23 8.84 23 4.94 19.07c-3.91-3.9-3.91-10.24 0-14.14.4-.4.82-.76 1.27-1.08.75-.53 1.93.36 1.85 1.19-.27 2.86.69 5.83 2.89 8.02a9.96 9.96 0 0 0 8.02 2.89m-1.64 2.02a12.08 12.08 0 0 1-7.8-3.47c-2.17-2.19-3.33-5-3.49-7.82-2.81 3.14-2.7 7.96.31 10.98 3.02 3.01 7.84 3.12 10.98.31"></path></svg>
+</label>
+</form>
+<!-- User preference: color palette -->
+<script>var palette=__md_get("__palette");if(palette&&palette.color){if("(prefers-color-scheme)"===palette.color.media){var media=matchMedia("(prefers-color-scheme: light)"),input=document.querySelector(media.matches?"[data-md-color-media='(prefers-color-scheme: light)']":"[data-md-color-media='(prefers-color-scheme: dark)']");palette.color.media=input.getAttribute("data-md-color-media"),palette.color.scheme=input.getAttribute("data-md-color-scheme"),palette.color.primary=input.getAttribute("data-md-color-primary"),palette.color.accent=input.getAttribute("data-md-color-accent")}for(var[key,value]of Object.entries(palette.color))document.body.setAttribute("data-md-color-"+key,value)}</script>
+<!-- Site language selector -->
+<!-- Button to open search modal -->
+<!-- Repository information -->
+</nav>
+<!-- Navigation tabs (sticky) -->
+<nav aria-label="Tabs" class="md-tabs" data-md-component="tabs">
+<div class="md-grid">
+<ul class="md-tabs__list">
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../index.html">
+        
+  
+  
+    
+  
+  Home
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../portal.html">
+        
+  
+  
+    
+  
+  Portal
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../meshcore/index.html">
+          
+  
+  
+    
+  
+  MeshCore
+
+        </a>
+</li>
+<li class="md-tabs__item md-tabs__item--active">
+<a class="md-tabs__link" href="../index.html">
+          
+  
+  
+    
+  
+  Meshtastic
+
+        </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../resources/index.html">
+        
+  
+  
+    
+  
+  Resources
+
+      </a>
+</li>
+<li class="md-tabs__item">
+<a class="md-tabs__link" href="../../contact.html">
+        
+  
+  
+    
+  
+  Contact
+
+      </a>
+</li>
+</ul>
+</div>
+</nav>
+</header>
+<div class="md-container" data-md-component="container">
+<main class="md-main" data-md-component="main">
+<div class="md-main__inner md-grid">
+<div class="md-sidebar md-sidebar--primary" data-md-component="sidebar" data-md-type="navigation">
+<div class="md-sidebar__scrollwrap">
+<div class="md-sidebar__inner">
+<!--
+  Copyright (c) 2016-2025 Martin Donath <martin.donath@squidfunk.com>
+
+  Permission is hereby granted, free of charge, to any person obtaining a copy
+  of this software and associated documentation files (the "Software"), to
+  deal in the Software without restriction, including without limitation the
+  rights to use, copy, modify, merge, publish, distribute, sublicense, and/or
+  sell copies of the Software, and to permit persons to whom the Software is
+  furnished to do so, subject to the following conditions:
+
+  The above copyright notice and this permission notice shall be included in
+  all copies or substantial portions of the Software.
+
+  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+  IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+  FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT. IN NO EVENT SHALL THE
+  AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+  LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
+  FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS
+  IN THE SOFTWARE.
+-->
+<!-- Determine classes -->
+<!-- Navigation -->
+<nav aria-label="Navigation" class="md-nav md-nav--primary md-nav--lifted md-nav--integrated" data-md-level="0">
+<!-- Site title -->
+<label class="md-nav__title" for="__drawer">
+<a aria-label="rrmesh" class="md-nav__button md-logo" data-md-component="logo" href="../../index.html" title="rrmesh">
+<img alt="logo" src="../../assets/rrmesh_logo.svg">
+</a>
+</label>
+<!-- Repository information -->
+<!-- Navigation list -->
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../index.html">
+<span class="md-ellipsis">
+    
+  
+    Home
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../portal.html">
+<span class="md-ellipsis">
+    
+  
+    Portal
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--nested">
+<input class="md-nav__toggle md-toggle" id="__nav_3" type="checkbox">
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../../meshcore/index.html">
+<span class="md-ellipsis">
+    
+  
+    MeshCore
+  
+
+    
+  </span>
+</a>
+</div>
+<nav aria-expanded="false" aria-labelledby="__nav_3_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_3">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    MeshCore
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+</ul>
+</nav>
+</li>
+<li class="md-nav__item md-nav__item--active md-nav__item--section md-nav__item--nested">
+<input checked="" class="md-nav__toggle md-toggle" id="__nav_4" type="checkbox">
+<div class="md-nav__link md-nav__container">
+<a class="md-nav__link" href="../index.html">
+<span class="md-ellipsis">
+    
+  
+    Meshtastic
+  
+
+    
+  </span>
+</a>
+<label class="md-nav__link" for="__nav_4" id="__nav_4_label" tabindex="">
+<span class="md-nav__icon md-icon"></span>
+</label>
+</div>
+<nav aria-expanded="true" aria-labelledby="__nav_4_label" class="md-nav" data-md-level="1">
+<label class="md-nav__title" for="__nav_4">
+<span class="md-nav__icon md-icon"></span>
+            
+  
+    Meshtastic
+  
+
+          </label>
+<ul class="md-nav__list" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="../guides/index.html">
+<span class="md-ellipsis">
+    
+  
+    Guides
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item md-nav__item--active">
+<input class="md-nav__toggle md-toggle" id="__toc" type="checkbox">
+<label class="md-nav__link md-nav__link--active" for="__toc">
+<span class="md-ellipsis">
+    
+  
+    MQTT
+  
+
+    
+  </span>
+<span class="md-nav__icon md-icon"></span>
+</label>
+<a class="md-nav__link md-nav__link--active" href="index.html">
+<span class="md-ellipsis">
+    
+  
+    MQTT
+  
+
+    
+  </span>
+</a>
+<nav aria-label="Table of contents" class="md-nav md-nav--secondary">
+<label class="md-nav__title" for="__toc">
+<span class="md-nav__icon md-icon"></span>
+      Table of contents
+    </label>
+<ul class="md-nav__list" data-md-component="toc" data-md-scrollfix="">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#limitations">
+<span class="md-ellipsis">
+      
+        Limitations
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#radio-configuration">
+<span class="md-ellipsis">
+      
+        Radio Configuration
+      
+    </span>
+</a>
+<nav aria-label="Radio Configuration" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#network">
+<span class="md-ellipsis">
+      
+        Network
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#mqtt">
+<span class="md-ellipsis">
+      
+        MQTT
+      
+    </span>
+</a>
+<nav aria-label="MQTT" class="md-nav">
+<ul class="md-nav__list">
+<li class="md-nav__item">
+<a class="md-nav__link" href="#map-reporting-optional">
+<span class="md-ellipsis">
+      
+        Map Reporting (Optional)
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#channels">
+<span class="md-ellipsis">
+      
+        Channels
+      
+    </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="#lora">
+<span class="md-ellipsis">
+      
+        LoRa
+      
+    </span>
+</a>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+</ul>
+</nav>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../resources/index.html">
+<span class="md-ellipsis">
+    
+  
+    Resources
+  
+
+    
+  </span>
+</a>
+</li>
+<li class="md-nav__item">
+<a class="md-nav__link" href="../../contact.html">
+<span class="md-ellipsis">
+    
+  
+    Contact
+  
+
+    
+  </span>
+</a>
+</li>
+</ul>
+</nav>
+</div>
+</div>
+</div>
+<div class="md-content" data-md-component="content">
+<article class="md-content__inner md-typeset">
+<a class="md-content__button md-icon" href="https://github.com/RockRiverMesh/rrmesh.net/edit/main/docs/meshtastic/mqtt/index.md" rel="edit" title="Edit this page">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M10 20H6V4h7v5h5v3.1l2-2V8l-6-6H6c-1.1 0-2 .9-2 2v16c0 1.1.9 2 2 2h4zm10.2-7c.1 0 .3.1.4.2l1.3 1.3c.2.2.2.6 0 .8l-1 1-2.1-2.1 1-1c.1-.1.2-.2.4-.2m0 3.9L14.1 23H12v-2.1l6.1-6.1z"></path></svg>
+</a>
+<h1 id="mqtt-for-meshtastic">MQTT for Meshtastic</h1>
+<p><a href="https://mqtt.org/">MQTT</a> is a lightweight messaging protocol designed for small embedded devices and low-bandwidth networks. Meshtastic utilizes your node or client's Internet connection to send and receive messages from a central server. It is often used to bridge portions of the mesh not covered by LoRa radios.</p>
+<h2 id="limitations">Limitations</h2>
+<p>Meshtastic packets that arrive from the MQTT server have their hop limit reduced to 0, so the receiving gateway will not rebroadcast them over LoRa. Only nodes within direct LoRa range of an MQTT-connected gateway will receive packets that come in over MQTT.</p>
+<figure>
+<a class="glightbox" data-desc-position="bottom" data-height="auto" data-type="image" data-width="auto"><div class="mxgraph" data-mxgraph="{&quot;toolbar-position&quot;: &quot;bottom&quot;, &quot;toolbar-nohide&quot;: &quot;0&quot;, &quot;tooltips&quot;: &quot;1&quot;, &quot;border&quot;: 5, &quot;resize&quot;: &quot;1&quot;, &quot;lightbox&quot;: &quot;1&quot;, &quot;toolbar&quot;: &quot;pages tags zoom layers lightbox&quot;, &quot;xml&quot;: &quot;&lt;mxfile host=\&quot;Electron\&quot; agent=\&quot;Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/26.1.1 Chrome/132.0.6834.210 Electron/34.3.3 Safari/537.36\&quot; version=\&quot;26.1.1\&quot;&gt;\n  &lt;diagram name=\&quot;Page-1\&quot; id=\&quot;Q23Y5WZqzNZ6_BMAr2mc\&quot;&gt;\n    &lt;mxGraphModel dx=\&quot;889\&quot; dy=\&quot;654\&quot; grid=\&quot;1\&quot; gridSize=\&quot;10\&quot; guides=\&quot;1\&quot; tooltips=\&quot;1\&quot; connect=\&quot;1\&quot; arrows=\&quot;1\&quot; fold=\&quot;1\&quot; page=\&quot;1\&quot; pageScale=\&quot;1\&quot; pageWidth=\&quot;800\&quot; pageHeight=\&quot;500\&quot; math=\&quot;0\&quot; shadow=\&quot;0\&quot;&gt;\n      &lt;root&gt;\n        &lt;mxCell id=\&quot;0\&quot;/&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-1\&quot; value=\&quot;Watermark\&quot; style=\&quot;locked=1;\&quot; visible=\&quot;0\&quot; parent=\&quot;0\&quot;/&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-2\&quot; value=\&quot;\&quot; style=\&quot;shape=image;aspect=fixed;image=data:image/svg+xml,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0iVVRGLTgiIHN0YW5kYWxvbmU9Im5vIj8+CjxzdmcKICAgd2lkdGg9IjYzMC4wMDAzNyIKICAgaGVpZ2h0PSIxNDIuMDAwMTUiCiAgIHZpZXdCb3g9IjAgMCA2MzAuMDAwMzcgMTQyLjAwMDE1IgogICB2ZXJzaW9uPSIxLjEiCiAgIGlkPSJzdmc2IgogICBzb2RpcG9kaTpkb2NuYW1lPSJycm1lc2hfbG9nby5zdmciCiAgIGlua3NjYXBlOnZlcnNpb249IjEuNCAoZTdjM2ZlYjEwMCwgMjAyNC0xMC0wOSkiCiAgIHhtbG5zOmlua3NjYXBlPSJodHRwOi8vd3d3Lmlua3NjYXBlLm9yZy9uYW1lc3BhY2VzL2lua3NjYXBlIgogICB4bWxuczpzb2RpcG9kaT0iaHR0cDovL3NvZGlwb2RpLnNvdXJjZWZvcmdlLm5ldC9EVEQvc29kaXBvZGktMC5kdGQiCiAgIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyIKICAgeG1sbnM6c3ZnPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+CiAgPGRlZnMKICAgICBpZD0iZGVmczYiIC8+CiAgPHNvZGlwb2RpOm5hbWVkdmlldwogICAgIGlkPSJuYW1lZHZpZXc2IgogICAgIHBhZ2Vjb2xvcj0iI2ZmZmZmZiIKICAgICBib3JkZXJjb2xvcj0iIzAwMDAwMCIKICAgICBib3JkZXJvcGFjaXR5PSIwLjI1IgogICAgIGlua3NjYXBlOnNob3dwYWdlc2hhZG93PSIyIgogICAgIGlua3NjYXBlOnBhZ2VvcGFjaXR5PSIwLjAiCiAgICAgaW5rc2NhcGU6cGFnZWNoZWNrZXJib2FyZD0iMCIKICAgICBpbmtzY2FwZTpkZXNrY29sb3I9IiNkMWQxZDEiCiAgICAgaW5rc2NhcGU6em9vbT0iMC45MzU1NDY4OCIKICAgICBpbmtzY2FwZTpjeD0iMTkwLjI2MzA1IgogICAgIGlua3NjYXBlOmN5PSIyNjUuMDg1NTkiCiAgICAgaW5rc2NhcGU6d2luZG93LXdpZHRoPSIxOTIwIgogICAgIGlua3NjYXBlOndpbmRvdy1oZWlnaHQ9IjEyMTEiCiAgICAgaW5rc2NhcGU6d2luZG93LXg9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LXk9IjAiCiAgICAgaW5rc2NhcGU6d2luZG93LW1heGltaXplZD0iMSIKICAgICBpbmtzY2FwZTpjdXJyZW50LWxheWVyPSJsYXllcjEiCiAgICAgc2hvd2d1aWRlcz0iZmFsc2UiIC8+CiAgPGcKICAgICBpbmtzY2FwZTpncm91cG1vZGU9ImxheWVyIgogICAgIGlkPSJsYXllcjEiCiAgICAgaW5rc2NhcGU6bGFiZWw9IkxheWVyIDEiCiAgICAgdHJhbnNmb3JtPSJ0cmFuc2xhdGUoLTIxOS45OTk5NCwtMjAyKSI+CiAgICA8dGV4dAogICAgICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIKICAgICAgIHN0eWxlPSJmb250LXNpemU6MTkxLjk5OTk5ODY4cHg7dGV4dC1hbGlnbjpzdGFydDt3cml0aW5nLW1vZGU6bHItdGI7ZGlyZWN0aW9uOmx0cjt0ZXh0LWFuY2hvcjpzdGFydDtmaWxsOiMwMDdiZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuOTk1MDMxOy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246J01vbnRzZXJyYXQsIEJvbGQnO2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LXN0eWxlOm5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtdmFyaWFudDpub3JtYWw7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWwiCiAgICAgICB4PSIyMDUuNTg5MTMiCiAgICAgICB5PSIzNDUuMDI4MjkiCiAgICAgICBpZD0idGV4dDYtMyIKICAgICAgIGlua3NjYXBlOmxhYmVsPSJyIgogICAgICAgdHJhbnNmb3JtPSJzY2FsZSgxLjAwMjk4ODgsMC45OTcwMjAxMikiPjx0c3BhbgogICAgICAgICBpZD0idHNwYW42LTkiCiAgICAgICAgIHg9IjIwNS41ODkxMyIKICAgICAgICAgeT0iMzQ1LjAyODI5IgogICAgICAgICBzdHlsZT0iZm9udC1zdHlsZTpub3JtYWw7Zm9udC12YXJpYW50Om5vcm1hbDtmb250LXdlaWdodDpib2xkO2ZvbnQtc3RyZXRjaDpub3JtYWw7Zm9udC1zaXplOjE5MS45OTk5OTg2OHB4O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjonTW9udHNlcnJhdCwgQm9sZCc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMDA3YmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDowLjk5NTAzMSIKICAgICAgICAgc29kaXBvZGk6cm9sZT0ibGluZSI+cjwvdHNwYW4+PC90ZXh0PgogICAgPHRleHQKICAgICAgIHhtbDpzcGFjZT0icHJlc2VydmUiCiAgICAgICBzdHlsZT0iZm9udC1zdHlsZTpub3JtYWw7Zm9udC12YXJpYW50Om5vcm1hbDtmb250LXdlaWdodDpib2xkO2ZvbnQtc3RyZXRjaDpub3JtYWw7Zm9udC1zaXplOjE5MnB4O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjonTW9udHNlcnJhdCwgQm9sZCc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7dGV4dC1hbGlnbjpzdGFydDt3cml0aW5nLW1vZGU6bHItdGI7ZGlyZWN0aW9uOmx0cjt0ZXh0LWFuY2hvcjpzdGFydDtmaWxsOiMwMDdiZmY7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuOTk1MDMxIgogICAgICAgeD0iMjc1LjM4MDc0IgogICAgICAgeT0iMzQ1LjAyODI5IgogICAgICAgaWQ9InRleHQ5IgogICAgICAgaW5rc2NhcGU6bGFiZWw9InIiCiAgICAgICB0cmFuc2Zvcm09InNjYWxlKDEuMDAyOTg4OCwwLjk5NzAyMDExKSI+PHRzcGFuCiAgICAgICAgIGlkPSJ0c3BhbjkiCiAgICAgICAgIHg9IjI3NS4zODA3NCIKICAgICAgICAgeT0iMzQ1LjAyODI5IgogICAgICAgICBzdHlsZT0iZm9udC1zdHlsZTpub3JtYWw7Zm9udC12YXJpYW50Om5vcm1hbDtmb250LXdlaWdodDpib2xkO2ZvbnQtc3RyZXRjaDpub3JtYWw7Zm9udC1zaXplOjE5MnB4O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjonTW9udHNlcnJhdCwgQm9sZCc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMDA3YmZmO2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDowLjk5NTAzMSIKICAgICAgICAgc29kaXBvZGk6cm9sZT0ibGluZSI+cjwvdHNwYW4+PC90ZXh0PgogICAgPHRleHQKICAgICAgIHhtbDpzcGFjZT0icHJlc2VydmUiCiAgICAgICBzdHlsZT0iZm9udC1zaXplOjE5MS45OTk5OTgycHg7dGV4dC1hbGlnbjpzdGFydDt3cml0aW5nLW1vZGU6bHItdGI7ZGlyZWN0aW9uOmx0cjt0ZXh0LWFuY2hvcjpzdGFydDtmaWxsOiMwMDAwMDA7c3Ryb2tlLXdpZHRoOjAuOTk0NTE1Oy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246J01vbnRzZXJyYXQsIEJvbGQnO2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LXN0eWxlOm5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtdmFyaWFudDpub3JtYWw7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWwiCiAgICAgICB4PSIzNDUuMzY0NDEiCiAgICAgICB5PSIzNDQuODUwMDciCiAgICAgICBpZD0idGV4dDYiCiAgICAgICBpbmtzY2FwZTpsYWJlbD0ibSIKICAgICAgIHRyYW5zZm9ybT0ic2NhbGUoMS4wMDI0NzExLDAuOTk3NTM1MDEpIj48dHNwYW4KICAgICAgICAgaWQ9InRzcGFuNiIKICAgICAgICAgeD0iMzQ1LjM2NDQxIgogICAgICAgICB5PSIzNDQuODUwMDciCiAgICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zdHJldGNoOm5vcm1hbDtmb250LXNpemU6MTkxLjk5OTk5ODJweDtmb250LWZhbWlseTpNb250c2VycmF0Oy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246J01vbnRzZXJyYXQsIEJvbGQnO2ZvbnQtdmFyaWFudC1saWdhdHVyZXM6bm9ybWFsO2ZvbnQtdmFyaWFudC1jYXBzOm5vcm1hbDtmb250LXZhcmlhbnQtbnVtZXJpYzpub3JtYWw7Zm9udC12YXJpYW50LWVhc3QtYXNpYW46bm9ybWFsO3N0cm9rZS13aWR0aDowLjk5NDUxNSIKICAgICAgICAgc29kaXBvZGk6cm9sZT0ibGluZSI+PHRzcGFuCiAgICAgICAgICAgc3R5bGU9ImZvbnQtc3R5bGU6bm9ybWFsO2ZvbnQtdmFyaWFudDpub3JtYWw7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZToxOTEuOTk5OTk4MnB4O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjonTW9udHNlcnJhdCwgQm9sZCc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMjhhNzQ1O2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDowLjk5NDUxNSIKICAgICAgICAgICBpZD0idHNwYW44Ij5tPC90c3Bhbj48L3RzcGFuPjwvdGV4dD4KICAgIDx0ZXh0CiAgICAgICB4bWw6c3BhY2U9InByZXNlcnZlIgogICAgICAgc3R5bGU9ImZvbnQtc2l6ZToxOTIuMDAwMDAyMjlweDt0ZXh0LWFsaWduOnN0YXJ0O3dyaXRpbmctbW9kZTpsci10YjtkaXJlY3Rpb246bHRyO3RleHQtYW5jaG9yOnN0YXJ0O2ZpbGw6IzAwMDAwMDtzdHJva2Utd2lkdGg6MC45ODQ4NzI7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjonTW9udHNlcnJhdCwgQm9sZCc7Zm9udC1mYW1pbHk6TW9udHNlcnJhdDtmb250LXdlaWdodDpib2xkO2ZvbnQtc3R5bGU6bm9ybWFsO2ZvbnQtc3RyZXRjaDpub3JtYWw7Zm9udC12YXJpYW50Om5vcm1hbDtmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtY2Fwczpub3JtYWw7Zm9udC12YXJpYW50LW51bWVyaWM6bm9ybWFsO2ZvbnQtdmFyaWFudC1lYXN0LWFzaWFuOm5vcm1hbCIKICAgICAgIHg9IjUyOC4wNTAzNSIKICAgICAgIHk9IjM0NC45OTc5OSIKICAgICAgIGlkPSJ0ZXh0MTEiCiAgICAgICBpbmtzY2FwZTpsYWJlbD0iZSIKICAgICAgIHRyYW5zZm9ybT0ic2NhbGUoMS4wMDcyOTkzLDAuOTkyNzUzNTcpIj48dHNwYW4KICAgICAgICAgaWQ9InRzcGFuMTEiCiAgICAgICAgIHg9IjUyOC4wNTAzNSIKICAgICAgICAgeT0iMzQ0Ljk5Nzk5IgogICAgICAgICBzdHlsZT0iZm9udC1zdHlsZTpub3JtYWw7Zm9udC12YXJpYW50Om5vcm1hbDtmb250LXdlaWdodDpib2xkO2ZvbnQtc3RyZXRjaDpub3JtYWw7Zm9udC1zaXplOjE5Mi4wMDAwMDIyOXB4O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjonTW9udHNlcnJhdCwgQm9sZCc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7c3Ryb2tlLXdpZHRoOjAuOTg0ODcyIgogICAgICAgICBzb2RpcG9kaTpyb2xlPSJsaW5lIj48dHNwYW4KICAgICAgICAgICBzdHlsZT0iZm9udC1zdHlsZTpub3JtYWw7Zm9udC12YXJpYW50Om5vcm1hbDtmb250LXdlaWdodDpib2xkO2ZvbnQtc3RyZXRjaDpub3JtYWw7Zm9udC1zaXplOjE5Mi4wMDAwMDIyOXB4O2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7LWlua3NjYXBlLWZvbnQtc3BlY2lmaWNhdGlvbjonTW9udHNlcnJhdCwgQm9sZCc7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWw7ZmlsbDojMjhhNzQ1O2ZpbGwtb3BhY2l0eToxO3N0cm9rZS13aWR0aDowLjk4NDg3MiIKICAgICAgICAgICBpZD0idHNwYW4xMCI+ZTwvdHNwYW4+PC90c3Bhbj48L3RleHQ+CiAgICA8dGV4dAogICAgICAgeG1sOnNwYWNlPSJwcmVzZXJ2ZSIKICAgICAgIHN0eWxlPSJmb250LXNpemU6MTkyLjAwMDAwMTc4cHg7dGV4dC1hbGlnbjpzdGFydDt3cml0aW5nLW1vZGU6bHItdGI7ZGlyZWN0aW9uOmx0cjt0ZXh0LWFuY2hvcjpzdGFydDtmaWxsOiMyOGE3NDU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuOTkxNDI1Oy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246J01vbnRzZXJyYXQsIEJvbGQnO2ZvbnQtZmFtaWx5Ok1vbnRzZXJyYXQ7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LXN0eWxlOm5vcm1hbDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtdmFyaWFudDpub3JtYWw7Zm9udC12YXJpYW50LWxpZ2F0dXJlczpub3JtYWw7Zm9udC12YXJpYW50LWNhcHM6bm9ybWFsO2ZvbnQtdmFyaWFudC1udW1lcmljOm5vcm1hbDtmb250LXZhcmlhbnQtZWFzdC1hc2lhbjpub3JtYWwiCiAgICAgICB4PSI2MzMuMjc0NiIKICAgICAgIHk9IjM0Ny4yOTI3MiIKICAgICAgIGlkPSJ0ZXh0MTUiCiAgICAgICBpbmtzY2FwZTpsYWJlbD0icyIKICAgICAgIHRyYW5zZm9ybT0ic2NhbGUoMS4wMTM5OTg3LDAuOTg2MTk0NTQpIj48dHNwYW4KICAgICAgICAgaWQ9InRzcGFuMTUiCiAgICAgICAgIHg9IjYzMy4yNzQ2IgogICAgICAgICB5PSIzNDcuMjkyNzIiCiAgICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zdHJldGNoOm5vcm1hbDtmb250LXNpemU6MTkyLjAwMDAwMTc4cHg7Zm9udC1mYW1pbHk6TW9udHNlcnJhdDstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidNb250c2VycmF0LCBCb2xkJztmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtY2Fwczpub3JtYWw7Zm9udC12YXJpYW50LW51bWVyaWM6bm9ybWFsO2ZvbnQtdmFyaWFudC1lYXN0LWFzaWFuOm5vcm1hbDtmaWxsOiMyOGE3NDU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuOTkxNDI1IgogICAgICAgICBzb2RpcG9kaTpyb2xlPSJsaW5lIj5zPHRzcGFuCiAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zdHJldGNoOm5vcm1hbDtmb250LXNpemU6MTkyLjAwMDAwMTc4cHg7Zm9udC1mYW1pbHk6TW9udHNlcnJhdDstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidNb250c2VycmF0LCBCb2xkJztmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtY2Fwczpub3JtYWw7Zm9udC12YXJpYW50LW51bWVyaWM6bm9ybWFsO2ZvbnQtdmFyaWFudC1lYXN0LWFzaWFuOm5vcm1hbDtmaWxsOiMyOGE3NDU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjAuOTkxNDI1IgogICBpZD0idHNwYW4xNCIgLz48L3RzcGFuPjwvdGV4dD4KICAgIDx0ZXh0CiAgICAgICB4bWw6c3BhY2U9InByZXNlcnZlIgogICAgICAgc3R5bGU9ImZvbnQtc2l6ZToxOTJweDt0ZXh0LWFsaWduOnN0YXJ0O3dyaXRpbmctbW9kZTpsci10YjtkaXJlY3Rpb246bHRyO3RleHQtYW5jaG9yOnN0YXJ0O2ZpbGw6IzI4YTc0NTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MS4wMDAyODstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidNb250c2VycmF0LCBCb2xkJztmb250LWZhbWlseTpNb250c2VycmF0O2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zdHlsZTpub3JtYWw7Zm9udC1zdHJldGNoOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtdmFyaWFudC1saWdhdHVyZXM6bm9ybWFsO2ZvbnQtdmFyaWFudC1jYXBzOm5vcm1hbDtmb250LXZhcmlhbnQtbnVtZXJpYzpub3JtYWw7Zm9udC12YXJpYW50LWVhc3QtYXNpYW46bm9ybWFsIgogICAgICAgeD0iNzI3LjU1NTg1IgogICAgICAgeT0iMzQ1LjIxNDAyIgogICAgICAgaWQ9InRleHQxMyIKICAgICAgIGlua3NjYXBlOmxhYmVsPSJlIgogICAgICAgdHJhbnNmb3JtPSJzY2FsZSgxLjAwMzUyOTMsMC45OTY0ODMxMikiPjx0c3BhbgogICAgICAgICBpZD0idHNwYW4xMyIKICAgICAgICAgeD0iNzI3LjU1NTg1IgogICAgICAgICB5PSIzNDUuMjE0MDIiCiAgICAgICAgIHN0eWxlPSJmb250LXN0eWxlOm5vcm1hbDtmb250LXZhcmlhbnQ6bm9ybWFsO2ZvbnQtd2VpZ2h0OmJvbGQ7Zm9udC1zdHJldGNoOm5vcm1hbDtmb250LXNpemU6MTkycHg7Zm9udC1mYW1pbHk6TW9udHNlcnJhdDstaW5rc2NhcGUtZm9udC1zcGVjaWZpY2F0aW9uOidNb250c2VycmF0LCBCb2xkJztmb250LXZhcmlhbnQtbGlnYXR1cmVzOm5vcm1hbDtmb250LXZhcmlhbnQtY2Fwczpub3JtYWw7Zm9udC12YXJpYW50LW51bWVyaWM6bm9ybWFsO2ZvbnQtdmFyaWFudC1lYXN0LWFzaWFuOm5vcm1hbDtmaWxsOiMyOGE3NDU7ZmlsbC1vcGFjaXR5OjE7c3Ryb2tlLXdpZHRoOjEuMDAwMjgiCiAgICAgICAgIHNvZGlwb2RpOnJvbGU9ImxpbmUiPmg8dHNwYW4KICAgc3R5bGU9ImZvbnQtc3R5bGU6bm9ybWFsO2ZvbnQtdmFyaWFudDpub3JtYWw7Zm9udC13ZWlnaHQ6Ym9sZDtmb250LXN0cmV0Y2g6bm9ybWFsO2ZvbnQtc2l6ZToxOTJweDtmb250LWZhbWlseTpNb250c2VycmF0Oy1pbmtzY2FwZS1mb250LXNwZWNpZmljYXRpb246J01vbnRzZXJyYXQsIEJvbGQnO2ZvbnQtdmFyaWFudC1saWdhdHVyZXM6bm9ybWFsO2ZvbnQtdmFyaWFudC1jYXBzOm5vcm1hbDtmb250LXZhcmlhbnQtbnVtZXJpYzpub3JtYWw7Zm9udC12YXJpYW50LWVhc3QtYXNpYW46bm9ybWFsO2ZpbGw6IzI4YTc0NTtmaWxsLW9wYWNpdHk6MTtzdHJva2Utd2lkdGg6MS4wMDAyOCIKICAgaWQ9InRzcGFuMTIiIC8+PC90c3Bhbj48L3RleHQ+CiAgPC9nPgo8L3N2Zz4K;opacity=10;enumerate=0;enumerateValue=2;allowArrows=0;connectable=0;noLabel=1;backgroundOutline=0;rounded=1;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-1\&quot;&gt;\n          &lt;mxGeometry x=\&quot;20\&quot; y=\&quot;920\&quot; width=\&quot;260\&quot; height=\&quot;58.63\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; value=\&quot;Elements\&quot; style=\&quot;\&quot; parent=\&quot;0\&quot;/&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-32\&quot; value=\&quot;Mesh&amp;lt;div&amp;gt;Node&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#dae8fc;fontColor=#000000;strokeColor=#6c8ebf;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Montserrat;fontSize=12;fontStyle=1;absoluteArcSize=1;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;180\&quot; y=\&quot;830\&quot; width=\&quot;80\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-33\&quot; value=\&quot;MQTT&amp;lt;div&amp;gt;Server&amp;lt;/div&amp;gt;\&quot; style=\&quot;shape=cylinder3;whiteSpace=wrap;html=1;boundedLbl=1;backgroundOutline=1;size=3.48046875;fillColor=#dae8fc;fontColor=#000000;strokeColor=#6c8ebf;strokeWidth=2;rounded=1;align=center;verticalAlign=middle;arcSize=10;fontFamily=Montserrat;fontSize=12;fontStyle=1;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;340\&quot; y=\&quot;830\&quot; width=\&quot;80\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-34\&quot; value=\&quot;WiFi\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;dashed=1;endArrow=blockThin;endFill=0;fontSize=12;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;fontFamily=Montserrat;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-35\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-33\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-35\&quot; value=\&quot;Mesh&amp;lt;div&amp;gt;Node&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#dae8fc;fontColor=#000000;strokeColor=#6c8ebf;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Montserrat;fontSize=12;fontStyle=1;absoluteArcSize=1;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;500\&quot; y=\&quot;830\&quot; width=\&quot;80\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-36\&quot; value=\&quot;LoRa\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;dashed=1;dashPattern=1 2;fontSize=12;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;fontFamily=Montserrat;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-38\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-35\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;620\&quot; y=\&quot;870\&quot;/&gt;\n              &lt;mxPoint x=\&quot;620\&quot; y=\&quot;870\&quot;/&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-37\&quot; value=\&quot;LoRa\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Montserrat;fontSize=12;fontColor=default;dashed=1;dashPattern=1 1;endArrow=none;startFill=0;targetPerimeterSpacing=0;sourcePerimeterSpacing=0;startArrow=none;strokeWidth=2;fillColor=#f5f5f5;strokeColor=#666666;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-49\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-38\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;640\&quot; y=\&quot;850.0000000000001\&quot; as=\&quot;targetPoint\&quot;/&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-38\&quot; value=\&quot;Mesh&amp;lt;div&amp;gt;Node&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#dae8fc;fontColor=#000000;strokeColor=#6c8ebf;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Montserrat;fontSize=12;fontStyle=1;absoluteArcSize=1;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;830\&quot; width=\&quot;80\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-39\&quot; value=\&quot;WiFi\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;entryX=0;entryY=0.5;entryDx=0;entryDy=0;entryPerimeter=0;dashed=1;fontSize=12;endArrow=blockThin;endFill=0;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;fontFamily=Montserrat;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-32\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-33\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-40\&quot; value=\&quot;0\&quot; style=\&quot;shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;rounded=1;strokeColor=#82b366;align=center;verticalAlign=middle;arcSize=15;fontFamily=Montserrat;fontSize=12;fillColor=#d5e8d4;size=5;strokeWidth=2;fontColor=#000000;fontStyle=1\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;610\&quot; y=\&quot;770\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-41\&quot; value=\&quot;Hop Limit\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=8;fontColor=default;strokeWidth=2;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;630\&quot; y=\&quot;770\&quot; width=\&quot;50\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-43\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Montserrat;fontSize=12;fontColor=default;targetPerimeterSpacing=0;sourcePerimeterSpacing=0;strokeWidth=2;strokeColor=#6c8ebf;align=center;verticalAlign=middle;arcSize=10;fontStyle=1;labelBackgroundColor=default;endArrow=none;endFill=1;fillColor=#dae8fc;curved=1;dashed=1;dashPattern=1 1;startFill=0;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-32\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-35\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;230\&quot; y=\&quot;800\&quot;/&gt;\n              &lt;mxPoint x=\&quot;530\&quot; y=\&quot;800\&quot;/&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-44\&quot; value=\&quot;1\&quot; style=\&quot;shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;rounded=1;strokeColor=#82b366;align=center;verticalAlign=middle;arcSize=15;fontFamily=Montserrat;fontSize=12;fillColor=#d5e8d4;size=5;strokeWidth=2;fontColor=#000000;fontStyle=1\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;370\&quot; y=\&quot;770\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-45\&quot; value=\&quot;Hop Limit\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=8;fontColor=default;strokeWidth=2;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;390\&quot; y=\&quot;770\&quot; width=\&quot;50\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-46\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Montserrat;fontSize=12;fontColor=default;targetPerimeterSpacing=0;sourcePerimeterSpacing=0;strokeWidth=2;strokeColor=#6c8ebf;align=center;verticalAlign=middle;arcSize=10;fontStyle=1;labelBackgroundColor=default;endArrow=classicThin;endFill=1;fillColor=#dae8fc;curved=1;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-35\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-38\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;530\&quot; y=\&quot;840\&quot; as=\&quot;sourcePoint\&quot;/&gt;\n            &lt;mxPoint x=\&quot;670\&quot; y=\&quot;840\&quot; as=\&quot;targetPoint\&quot;/&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;550\&quot; y=\&quot;800\&quot;/&gt;\n              &lt;mxPoint x=\&quot;690\&quot; y=\&quot;800\&quot;/&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-47\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Montserrat;fontSize=12;fontColor=default;targetPerimeterSpacing=0;sourcePerimeterSpacing=0;endArrow=classicThin;endFill=1;strokeWidth=2;strokeColor=#6c8ebf;align=center;verticalAlign=middle;arcSize=10;fontStyle=1;labelBackgroundColor=default;fillColor=#dae8fc;curved=1;startFill=0;endSize=6;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-32\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-33\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;190\&quot; y=\&quot;840\&quot; as=\&quot;sourcePoint\&quot;/&gt;\n            &lt;mxPoint x=\&quot;510\&quot; y=\&quot;840\&quot; as=\&quot;targetPoint\&quot;/&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;250\&quot; y=\&quot;810\&quot;/&gt;\n              &lt;mxPoint x=\&quot;360\&quot; y=\&quot;810\&quot;/&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-48\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Montserrat;fontSize=12;fontColor=default;targetPerimeterSpacing=0;sourcePerimeterSpacing=0;endArrow=classicThin;endFill=1;strokeWidth=2;strokeColor=#6c8ebf;align=center;verticalAlign=middle;arcSize=10;fontStyle=1;labelBackgroundColor=default;fillColor=#dae8fc;curved=1;startFill=0;endSize=6;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-33\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-35\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;280\&quot; y=\&quot;840\&quot; as=\&quot;sourcePoint\&quot;/&gt;\n            &lt;mxPoint x=\&quot;430\&quot; y=\&quot;840\&quot; as=\&quot;targetPoint\&quot;/&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;400\&quot; y=\&quot;810\&quot;/&gt;\n              &lt;mxPoint x=\&quot;510\&quot; y=\&quot;810\&quot;/&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-49\&quot; value=\&quot;Mesh&amp;lt;div&amp;gt;Node&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;arcSize=5;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;strokeWidth=2;dashed=1;dashPattern=1 1;fontFamily=Montserrat;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;670\&quot; width=\&quot;80\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-50\&quot; value=\&quot;X\&quot; style=\&quot;shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;rounded=1;align=center;verticalAlign=middle;arcSize=15;fontFamily=Helvetica;fontSize=12;size=5;fillColor=#f8cecc;strokeColor=#b85450;strokeWidth=2;fontStyle=1;fontColor=#000000;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;640\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-51\&quot; value=\&quot;Mesh&amp;lt;div&amp;gt;Node&amp;lt;/div&amp;gt;\&quot; style=\&quot;rounded=1;whiteSpace=wrap;html=1;arcSize=10;fillColor=#dae8fc;fontColor=#000000;strokeColor=#6c8ebf;strokeWidth=2;align=center;verticalAlign=middle;fontFamily=Montserrat;fontSize=12;fontStyle=1;absoluteArcSize=1;shadow=1;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;20\&quot; y=\&quot;830\&quot; width=\&quot;80\&quot; height=\&quot;80\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-52\&quot; value=\&quot;LoRa\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;startArrow=classic;startFill=1;dashed=1;dashPattern=1 2;fontSize=12;strokeWidth=2;fillColor=#d5e8d4;strokeColor=#82b366;fontFamily=Montserrat;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-32\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-51\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;390\&quot; y=\&quot;860\&quot; as=\&quot;sourcePoint\&quot;/&gt;\n            &lt;mxPoint x=\&quot;350\&quot; y=\&quot;860\&quot; as=\&quot;targetPoint\&quot;/&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-53\&quot; style=\&quot;edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;fontFamily=Montserrat;fontSize=12;fontColor=default;targetPerimeterSpacing=0;sourcePerimeterSpacing=0;strokeWidth=2;strokeColor=#6c8ebf;align=center;verticalAlign=middle;arcSize=10;fontStyle=1;labelBackgroundColor=default;endArrow=classicThin;endFill=1;fillColor=#dae8fc;curved=1;\&quot; edge=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot; source=\&quot;XMzaWBDuqLLXthoCIVvU-51\&quot; target=\&quot;XMzaWBDuqLLXthoCIVvU-32\&quot;&gt;\n          &lt;mxGeometry relative=\&quot;1\&quot; as=\&quot;geometry\&quot;&gt;\n            &lt;mxPoint x=\&quot;170\&quot; y=\&quot;840\&quot; as=\&quot;sourcePoint\&quot;/&gt;\n            &lt;mxPoint x=\&quot;330\&quot; y=\&quot;840\&quot; as=\&quot;targetPoint\&quot;/&gt;\n            &lt;Array as=\&quot;points\&quot;&gt;\n              &lt;mxPoint x=\&quot;70\&quot; y=\&quot;800\&quot;/&gt;\n              &lt;mxPoint x=\&quot;210\&quot; y=\&quot;800\&quot;/&gt;\n            &lt;/Array&gt;\n          &lt;/mxGeometry&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-54\&quot; value=\&quot;3+\&quot; style=\&quot;shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;darkOpacity=0.05;rounded=1;strokeColor=#82b366;align=center;verticalAlign=middle;arcSize=15;fontFamily=Montserrat;fontSize=12;fillColor=#d5e8d4;size=5;strokeWidth=2;fontColor=#000000;fontStyle=1\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;130\&quot; y=\&quot;770\&quot; width=\&quot;20\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-55\&quot; value=\&quot;Hop Limit\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=8;fontColor=default;strokeWidth=2;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;150\&quot; y=\&quot;770\&quot; width=\&quot;50\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-56\&quot; value=\&quot;MQTT Restricts the Hop Limit\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=12;fontColor=default;strokeWidth=2;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;275\&quot; y=\&quot;730\&quot; width=\&quot;210\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;XMzaWBDuqLLXthoCIVvU-42\&quot; value=\&quot;No Messages Received\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=10;fontColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;680\&quot; y=\&quot;640\&quot; width=\&quot;60\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;wNxjivvokhaChPq9PkIw-0\&quot; value=\&quot;&amp;lt;div&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;[ALCE]&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;Alice&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=12;fontColor=default;fontStyle=0;labelBackgroundColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;20\&quot; y=\&quot;925\&quot; width=\&quot;80\&quot; height=\&quot;20\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;wNxjivvokhaChPq9PkIw-1\&quot; value=\&quot;&amp;lt;div&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;[BOB]&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;Bob&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=12;fontColor=default;fontStyle=0;labelBackgroundColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;660\&quot; y=\&quot;920\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;wNxjivvokhaChPq9PkIw-2\&quot; value=\&quot;&amp;lt;div&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;[MG-1] Meshgate-1&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=12;fontColor=default;fontStyle=0;labelBackgroundColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;500\&quot; y=\&quot;920\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;wNxjivvokhaChPq9PkIw-3\&quot; value=\&quot;&amp;lt;div&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;[CHAR]&amp;amp;nbsp;&amp;lt;/span&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;Charlie&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=12;fontColor=default;fontStyle=0;labelBackgroundColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;570\&quot; y=\&quot;695\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n        &lt;mxCell id=\&quot;wNxjivvokhaChPq9PkIw-4\&quot; value=\&quot;&amp;lt;div&amp;gt;&amp;lt;span style=&amp;quot;background-color: light-dark(#ffffff, var(--ge-dark-color, #121212)); color: light-dark(rgb(0, 0, 0), rgb(255, 255, 255));&amp;quot;&amp;gt;[RPTR]&amp;lt;br&amp;gt;Repeater&amp;lt;/span&amp;gt;&amp;lt;/div&amp;gt;\&quot; style=\&quot;text;html=1;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;fontFamily=Montserrat;fontSize=12;fontColor=default;fontStyle=0;labelBackgroundColor=default;\&quot; vertex=\&quot;1\&quot; parent=\&quot;XMzaWBDuqLLXthoCIVvU-3\&quot;&gt;\n          &lt;mxGeometry x=\&quot;180\&quot; y=\&quot;920\&quot; width=\&quot;80\&quot; height=\&quot;30\&quot; as=\&quot;geometry\&quot;/&gt;\n        &lt;/mxCell&gt;\n      &lt;/root&gt;\n    &lt;/mxGraphModel&gt;\n  &lt;/diagram&gt;\n&lt;/mxfile&gt;&quot;}" style="max-width:100%;border:1px solid transparent;"></div></a>
+</figure>
+<p>If <strong>[ALCE] Alice</strong> wants to talk to <strong>[BOB] Bob</strong>, her messages reach him over MQTT via the <strong>[MG-1]</strong> gateway. <strong>[CHAR] Charlie</strong>, however, is out of LoRa range of <strong>[MG-1]</strong> — and because packets arriving from MQTT have their hop limit reduced to 0, <strong>[MG-1]</strong> can't relay them any further. Charlie never receives Alice's messages.</p>
+<h2 id="radio-configuration">Radio Configuration</h2>
+<h3 id="network">Network</h3>
+<p>Your node must have working Internet access before MQTT can connect. Most users join the node to a Wi-Fi network via the Meshtastic app under <strong>Radio configuration → Network → WiFi</strong>. If your node has Ethernet, configure that instead. Confirm the <strong>Network status</strong> in the app shows a green/connected state before moving on.</p>
+<h3 id="mqtt">MQTT</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Server</td>
+<td><code>mqtt.rrmesh.net</code></td>
+</tr>
+<tr>
+<td>Username</td>
+<td><code>meshnode</code></td>
+</tr>
+<tr>
+<td>Password</td>
+<td><code>rock815river</code></td>
+</tr>
+<tr>
+<td>Root Topic</td>
+<td><code>msh/US</code></td>
+</tr>
+<tr>
+<td>Encryption enabled</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>TLS enabled</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h4 id="map-reporting-optional">Map Reporting (Optional)</h4>
+<p>If you want your node to appear on the <a href="../../portal.html">Portal</a> map, enable <strong>Map reporting</strong> under the MQTT settings. The node will publish its position and basic metadata to the configured MQTT root topic on a periodic interval. Position precision is configurable — pick a value you're comfortable broadcasting publicly.</p>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Map reporting</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Publish interval</td>
+<td><code>900</code> (15 min)</td>
+</tr>
+<tr>
+<td>Precision</td>
+<td><code>14</code> (~1.2 km)</td>
+</tr>
+</tbody>
+</table>
+<h3 id="channels">Channels</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Uplink</td>
+<td>Yes</td>
+</tr>
+<tr>
+<td>Downlink</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<h3 id="lora">LoRa</h3>
+<table>
+<thead>
+<tr>
+<th>Setting</th>
+<th>Value</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>OK to MQTT</td>
+<td>Yes</td>
+</tr>
+</tbody>
+</table>
+<aside class="md-source-file">
+<span class="md-source-file__fact">
+<span class="md-icon" title="Last update">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M21 13.1c-.1 0-.3.1-.4.2l-1 1 2.1 2.1 1-1c.2-.2.2-.6 0-.8l-1.3-1.3c-.1-.1-.2-.2-.4-.2m-1.9 1.8-6.1 6V23h2.1l6.1-6.1zM12.5 7v5.2l4 2.4-1 1L11 13V7zM11 21.9c-5.1-.5-9-4.8-9-9.9C2 6.5 6.5 2 12 2c5.3 0 9.6 4.1 10 9.3-.3-.1-.6-.2-1-.2s-.7.1-1 .2C19.6 7.2 16.2 4 12 4c-4.4 0-8 3.6-8 8 0 4.1 3.1 7.5 7.1 7.9l-.1.2z"></path></svg>
+</span>
+<span class="git-revision-date-localized-plugin git-revision-date-localized-plugin-date" title="September 3, 2026 23:01:45 UTC">September 3, 2026</span>
+</span>
+</aside>
+</article>
+</div>
+<script>var target=document.getElementById(location.hash.slice(1));target&&target.name&&(target.checked=target.name.startsWith("__tabbed_"))</script>
+</div>
+</main>
+<footer class="md-footer">
+<div class="md-footer-meta md-typeset">
+<div class="md-footer-meta__inner md-grid">
+<div class="md-copyright">
+<div class="md-copyright__highlight">
+      Copyright © 2025 Rock River Mesh <u><a href="https://github.com/RockRiverMesh/rrmesh.net">Contributors</a></u><br><p style="margin:0">Rock River Mesh is not affilated with <u><a href="https://meshtastic.org" rel="noreferrer noopener" target="_blank">Meshtastic®</a></u>, nor endorsed by <u><a href="https://meshtastic.org/docs/legal/licensing-and-trademark" rel="noreferrer noopener" target="_blank">Meshtastic LLC</a></u>.</p>
+</div>
+  
+  
+    Made with
+    <a href="https://squidfunk.github.io/mkdocs-material/" rel="noopener" target="_blank">
+      Material for MkDocs
+    </a>
+</div>
+</div>
+</div>
+</footer>
+</div>
+<div class="md-dialog" data-md-component="dialog">
+<div class="md-dialog__inner md-typeset"></div>
+</div>
+<script id="__config" type="application/json">{"annotate": null, "base": "../..", "features": ["content.action.edit", "content.code.copy", "navigation.indexes", "navigation.instant", "navigation.instant.prefetch", "navigation.tabs", "navigation.tabs.sticky", "toc.integrate"], "search": "../../assets/javascripts/workers/search.2c215733.min.js", "tags": null, "translations": {"clipboard.copied": "Copied to clipboard", "clipboard.copy": "Copy to clipboard", "search.result.more.one": "1 more on this page", "search.result.more.other": "# more on this page", "search.result.none": "No matching documents", "search.result.one": "1 matching document", "search.result.other": "# matching documents", "search.result.placeholder": "Type to start searching", "search.result.term.missing": "Missing", "select.version": "Select version"}, "version": null}</script>
+<script src="../../assets/javascripts/bundle.d7400e89.min.js"></script>
+<script src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+<script src="../../assets/javascripts/drawio-reload.js"></script>
+<script src="https://viewer.diagrams.net/js/viewer-static.min.js"></script>
+<script id="init-glightbox">document.querySelectorAll('.glightbox').forEach(function(element) {
+    try {
+        var img = element.querySelector('img');
+        if (img && img.src) {
+            element.setAttribute('href', img.src);
+        } else {
+            console.log('No img element with src attribute found');
+        }
+    } catch (error) {
+        console.log('Error:', error);
+    }
+});
+const lightbox = GLightbox({"touchNavigation": true, "loop": false, "zoomable": true, "draggable": true, "openEffect": "zoom", "closeEffect": "zoom", "slideEffect": "slide"});
+document$.subscribe(()=>{ lightbox.reload(); });
+</script></body></html>
