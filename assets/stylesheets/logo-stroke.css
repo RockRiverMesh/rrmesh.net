@@ -1,0 +1,11 @@
+/* The header partial inlines the logo SVG (via hooks/inline_logo.py)
+   so we can stroke its paths here. overflow:visible lets the stroke
+   render past the tight viewBox without modifying the SVG file. */
+.md-header .md-logo svg {
+  overflow: visible;
+}
+.md-header .md-logo svg path {
+  stroke: #000;
+  stroke-width: 10;
+  paint-order: stroke fill markers;
+}
